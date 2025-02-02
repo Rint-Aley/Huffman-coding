@@ -15,15 +15,15 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_executable(huffman_coding
-	"src/main.cpp"
-)
+ "src/main.cpp"
+ "src/cli.cpp")
 
 enable_testing()
 
 add_executable(
-  tests
-  "tests/test.cpp"
-)
+ tests
+ "tests/cli_test.cpp"
+ "src/cli.cpp")
 target_link_libraries(
   tests
   GTest::gtest_main
