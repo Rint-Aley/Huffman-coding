@@ -16,7 +16,12 @@ FetchContent_MakeAvailable(googletest)
 
 add_executable(huffman_coding
  "src/main.cpp"
- "src/cli.cpp")
+ "src/cli.cpp"
+ "src/encode.cpp"
+ "src/encode.h"
+ "utils/huffman_tree.cpp"
+ "utils/huffman_tree.h"
+)
 
 enable_testing()
 

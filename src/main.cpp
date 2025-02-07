@@ -1,5 +1,6 @@
 #include <iostream>
 #include "cli.h"
+#include "encode.h"
 
 int main(int argc, char** argv) {
     const char* HELP_MESSAGE = "executable_name [-h] [--help] - shows this message\n"
@@ -16,7 +17,7 @@ int main(int argc, char** argv) {
         std::cerr << "'" << argv[1] << "' is not a supported command.\nSee executable_name -h" << std::endl;
         return 1;
     case Status::Encode:
-        //TODO: call encode
+        encode(argv[2], argv[3]);
         break;
     case Status::EncodeHelp:
         std::cout << "executable_name encode <source_file> <output_file>" << std::endl;
