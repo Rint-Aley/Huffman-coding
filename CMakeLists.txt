@@ -27,8 +27,10 @@ add_executable(
  tests
  "tests/cli_test.cpp"
  "tests/huffman_tree_test.cpp"
+ "tests/bit_writer_test.cpp"
  "src/cli.cpp"
  "utils/huffman_tree.cpp"
+ "src/bit_writer.cpp"
 )
 target_link_libraries(
   tests
