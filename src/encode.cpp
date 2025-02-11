@@ -1,55 +1,34 @@
-#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include "encode.h"
-#include <unordered_map>
 #include "../utils/huffman_tree.h"
 
+void write_frequencies(std::ifstream& file, unsigned long long frequency[BYTE_SIZE]) {
+    unsigned char data;
+    while (file.good()) {
+        file.read(reinterpret_cast<std::istream::char_type*>(&data), sizeof(data));
+        if (file.eof()) {
+            break;
+        }
+        ++frequency[data];
+    }
+}
 
-void encode(char *in, char *out) {
-    std::ifstream fr(in, std::ios::binary);
+void encode(char *input_file_name, char *output_file_name) {
+    std::ifstream input_file(input_file_name, std::ios::binary);
 
-    if (!fr.is_open()) {
-        std::cerr << "Error opening file" << std::endl;
+    if (!input_file.is_open()) {
+        std::cerr << "Failed to open input file." << std::endl;
         return;
     }
 
-    long long counts[CODE_SIZE] = {0};
-    unsigned char data;
-    while (fr.good()) {
-        fr.read(reinterpret_cast<std::istream::char_type *>(&data), sizeof(data));
-        if (fr.eof()) {
-            break;
-        }
-        ++counts[data];
-    }
+    unsigned long long frequency[BYTE_SIZE] = {0};
+    write_frequencies(input_file, frequency);
 
-    unsigned char arr[CODE_SIZE] = {};
-    long long freq[CODE_SIZE] = {};
-    int index = 0;
-    for (int i = 0; i < CODE_SIZE; ++i) {
-        if (counts[i] != 0) {
-            arr[index] = i;
-            freq[index] = counts[i];
-            ++index;
-        }
-    }
-    for (int i = 0; i < index; ++i) {
-        std::cout << +arr[i] << ' ' << freq[i] << std::endl;
-    }
-    std::cout << std::endl;
+    input_file.close();
 
-
-    HuffmanTree huffman_tree = HuffmanTree(CODE_SIZE * 4);
-    std::unordered_map<unsigned char, std::string> codes;
-
-    huffman_tree.build(arr, freq, index);
-    huffman_tree.get_codes(codes);
-
-    for (auto &[key, value]: codes) {
-        std::cout << +key << ' ' << value << std::endl;
-    }
-    HuffmanTree::Node *root = huffman_tree.get_huffman_tree();
-
-    fr.close();
+    HuffmanTree huffman_tree = HuffmanTree(frequency);
+    
+    // TODO: Getting Codes
+    // TODO: Writing to the file
 }

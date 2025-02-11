@@ -4,21 +4,24 @@
 #include <ostream>
 
 
-HuffmanTree::HuffmanTree(int capacity) : size(0), pointers_size(0), capacity(capacity), code_index(0),
-                                         array(new Node *[capacity]),
-                                         pointers(new Node *[capacity]), code_string(new char[capacity]) {
+HuffmanTree::HuffmanTree(int capacity) : heap_size(0), pointers_size(0), capacity(capacity),
+        heap_array(new Node *[capacity]), pointers(new Node *[capacity]) {
     for (int i = 0; i < capacity; ++i) {
         pointers[i] = new HuffmanTree::Node;
     }
 }
 
+HuffmanTree::HuffmanTree(unsigned long long* frequencies) : HuffmanTree(BYTE_SIZE * 2) {
+    build(frequencies);
+}
+
 HuffmanTree::~HuffmanTree() {
     for (int i = 0; i < capacity; ++i) {
-        delete pointers[i];
+        if (pointers[i] != nullptr)
+            delete pointers[i];
     }
     delete[] pointers;
-    delete[] array;
-    delete[] code_string;
+    delete[] heap_array;
 }
 
 void HuffmanTree::swap(Node *&a, Node *&b) {
@@ -31,20 +34,20 @@ void HuffmanTree::heapify(int index) {
     int smallest = index;
     int left = 2 * index + 1;
     int right = 2 * index + 2;
-    if (left < size && array[left]->freq < array[smallest]->freq)
+    if (left < heap_size && heap_array[left]->freq < heap_array[smallest]->freq)
         smallest = left;
-    if (right < size && array[right]->freq < array[smallest]->freq)
+    if (right < heap_size && heap_array[right]->freq < heap_array[smallest]->freq)
         smallest = right;
     if (smallest != index) {
-        swap(array[smallest], array[index]);
+        swap(heap_array[smallest], heap_array[index]);
         heapify(smallest);
     }
 }
 
-HuffmanTree::Node *HuffmanTree::erase() {
-    Node *node = array[0];
-    array[0] = array[size - 1];
-    --size;
+HuffmanTree::Node* HuffmanTree::erase() {
+    Node *node = heap_array[0];
+    heap_array[0] = heap_array[heap_size - 1];
+    --heap_size;
     heapify(0);
     return node;
 }
@@ -59,86 +62,44 @@ void HuffmanTree::insert(unsigned char data, long long freq, Node *left, Node *r
     pointers[pointers_size]->left = left;
     pointers[pointers_size]->right = right;
 
-    array[size] = pointers[pointers_size];
+    heap_array[heap_size] = pointers[pointers_size];
+
+    left->parent = pointers[pointers_size];
+    right->parent = pointers[pointers_size];
 
     ++pointers_size;
-    ++size;
+    ++heap_size;
     sift_up();
 }
 
 void HuffmanTree::sift_up() {
-    int i = size - 1;
-    while (i > 0 && array[(i - 1) / 2]->freq > array[i]->freq) {
-        swap(array[i], array[(i - 1) / 2]);
+    int i = heap_size - 1;
+    while (i > 0 && heap_array[(i - 1) / 2]->freq > heap_array[i]->freq) {
+        swap(heap_array[i], heap_array[(i - 1) / 2]);
         i = (i - 1) / 2;
     }
 }
 
-void HuffmanTree::build(const unsigned char *data, const long long *freq, int length) {
-    for (int i = 0; i < length; ++i) {
-        pointers[i]->freq = freq[i];
-        pointers[i]->data = data[i];
-        array[i] = pointers[i];
+void HuffmanTree::build(const unsigned long long *freq) {
+    unsigned char count = 0;
+    for (int i = 0; i < BYTE_SIZE; ++i) {
+        if (freq[i] != 0) {
+            pointers[count]->freq = freq[i];
+            pointers[count]->data = i;
+            heap_array[count] = pointers[count];
+            ++count;
+        }
     }
-    size = length;
-    pointers_size = length;
-    for (int i = (size - 1) / 2; i >= 0; --i) {
+    heap_size = count;
+    pointers_size = count;
+    for (int i = (heap_size - 1) / 2; i >= 0; --i) {
         heapify(i);
     }
     Node *left, *right;
-    while (size > 1) {
+    while (heap_size > 1) {
         left = erase();
         right = erase();
 
         insert(0, left->freq + right->freq, left, right);
     }
-}
-
-void HuffmanTree::inorder_walk(std::unordered_map<unsigned char, std::string> &codes, Node *node) {
-    if (node->left != nullptr) {
-        code_string[code_index++] = '0';
-        inorder_walk(codes, node->left);
-        --code_index;
-    }
-    if (node->is_byte()) {
-        for (int i = 0; i < code_index; ++i) {
-            codes[node->data].push_back(code_string[i]);
-        }
-    }
-    if (node->right != nullptr) {
-        code_string[code_index++] = '1';
-        inorder_walk(codes, node->right);
-        --code_index;
-    }
-}
-
-void HuffmanTree::get_codes(std::unordered_map<unsigned char, std::string> &codes) {
-    Node *node = array[0];
-    inorder_walk(codes, node);
-}
-
-void HuffmanTree::print() {
-    int height = (int) ceil(log2(size + 1));
-    int maxNodesInLevel = 1;
-    int elementsOnLevel = 0;
-
-    for (int level = 0; level < height; level++) {
-        int spaces = (int) pow(2, height - level) - 1 + 10;
-
-        for (int i = elementsOnLevel; i < size && i < elementsOnLevel + maxNodesInLevel; ++i) {
-            for (int j = 0; j < spaces; j++)
-                std::cout << ' ';
-            std::cout << array[i]->data << ' ' << array[i]->freq;
-            for (int j = 0; j < spaces; j++)
-                std::cout << ' ';
-        }
-        std::cout << '\n';
-        elementsOnLevel += maxNodesInLevel;
-        maxNodesInLevel *= 2;
-    }
-    printf("\n");
-    for (int i = 0; i < size; ++i) {
-        std::cout << array[i]->data << ' ' << array[i]->freq << ' ';
-    }
-
 }

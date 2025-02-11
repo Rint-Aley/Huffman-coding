@@ -18,9 +18,7 @@ add_executable(huffman_coding
  "src/main.cpp"
  "src/cli.cpp"
  "src/encode.cpp"
- "src/encode.h"
  "utils/huffman_tree.cpp"
- "utils/huffman_tree.h"
 )
 
 enable_testing()
@@ -28,7 +26,10 @@ enable_testing()
 add_executable(
  tests
  "tests/cli_test.cpp"
- "src/cli.cpp")
+ "tests/huffman_tree_test.cpp"
+ "src/cli.cpp"
+ "utils/huffman_tree.cpp"
+)
 target_link_libraries(
   tests
   GTest::gtest_main
