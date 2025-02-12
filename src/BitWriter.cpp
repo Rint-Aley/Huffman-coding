@@ -50,3 +50,13 @@ unsigned char* BitWriter::CreateCopyOfBuffer() {
 	}
 	return return_buffer;
 }
+
+char BitWriter::WriteToFile(std::ofstream& output_file)
+{
+	if (!output_file.is_open())
+		return 1;
+	output_file.write(reinterpret_cast<char*>(buffer), size);
+	if (output_file.fail())
+		return 2;
+	return 0;
+}

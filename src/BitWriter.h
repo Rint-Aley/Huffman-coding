@@ -1,3 +1,4 @@
+#include <fstream>
 #ifndef BIT_WRITER_H
 #define BIT_WRITER_H
 
@@ -33,6 +34,8 @@ public:
 	void Write(const BitFieldInfo& code);
 
 	unsigned char* CreateCopyOfBuffer();
+
+	char WriteToFile(std::ofstream& output_file);
 };
 
 #endif

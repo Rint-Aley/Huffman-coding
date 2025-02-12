@@ -48,22 +48,6 @@ TEST(HuffmanTree, Case1) {
 	ASSERT_EQ(*arr[10] == BitFieldInfo(new unsigned char(0b11), 2), true);
 }
 
-void print_node(HuffmanTree::Node* node) {
-	std::cout << +node->data << ' ' << +node->freq << std::endl;
-	if (node->left != nullptr)
-		print_node(node->left);
-	if (node->right != nullptr)
-		print_node(node->right);
-}
-
-void print_bit_field(BitFieldInfo& bf) {
-	std::cout << bf.length << ' ';
-	for (int i = 0; i < (bf.length + 7) / 8; ++i) {
-		std::cout << +bf.code[i] << ' ';
-	}
-	std::cout << std::endl;
-}
-
 TEST(HuffmanTree, Case2) {
 	unsigned long long frequencies[BYTE_SIZE] = { 0 };
 	frequencies[2] = 8;
@@ -76,7 +60,6 @@ TEST(HuffmanTree, Case2) {
 	frequencies[234] = 14;
 	HuffmanTree huffman_tree = HuffmanTree(frequencies);
 
-	// Should add here test for the tree structure
 	HuffmanTree::Node *prebuild_tree[15];
 	prebuild_tree[0] = &HuffmanTree::Node(2, 8);
 	prebuild_tree[1] = &HuffmanTree::Node(3, 9);
