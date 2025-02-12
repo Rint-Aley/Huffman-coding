@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/bit_writer.h"
+#include "../src/BitWriter.h"
 
 TEST(BitWriter, WriteBytes) {
 	unsigned char char_code[3] = { 0b00110011 };

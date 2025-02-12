@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "encode.h"
-#include "../utils/huffman_tree.h"
+#include "HuffmanTree.h"
 
 void write_frequencies(std::ifstream& file, unsigned long long frequency[BYTE_SIZE]) {
     unsigned char data;

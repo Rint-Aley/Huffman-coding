@@ -1,4 +1,4 @@
-#include "bit_writer.h"
+#include "BitWriter.h"
 
 BitWriter::BitWriter(size_t size) :
 	size(size), current_byte(0), shift(0)

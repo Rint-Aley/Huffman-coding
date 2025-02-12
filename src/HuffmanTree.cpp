@@ -1,8 +1,7 @@
-#include "huffman_tree.h"
-
+#include "HuffmanTree.h"
+#include "BitWriter.h"
 #include <iostream>
 #include <ostream>
-
 
 HuffmanTree::HuffmanTree(int capacity) : heap_size(0), pointers_size(0), capacity(capacity),
         heap_array(new Node *[capacity]), pointers(new Node *[capacity]) {
@@ -101,5 +100,72 @@ void HuffmanTree::build(const unsigned long long *freq) {
         right = erase();
 
         insert(0, left->freq + right->freq, left, right);
+    }
+}
+
+void write_bit_field(BitFieldInfo** arr, unsigned char byte, unsigned char* buffer, short length) {
+    short buffer_len = (length + 7) / 8;
+    unsigned char* new_buffer = new unsigned char[buffer_len];
+    for (int i = 0; i < buffer_len; ++i) {
+        new_buffer[i] = buffer[i];
+    }
+    arr[byte] = new BitFieldInfo(new_buffer, length);
+}
+
+BitFieldInfo** HuffmanTree::convert_tree_to_bit_fields()
+{
+    BitFieldInfo **result = new BitFieldInfo*[BYTE_SIZE];
+    
+    Node* current_node = get_root();
+    if (current_node == nullptr) {
+        return result;
+    }
+
+    unsigned char buffer[BYTE_SIZE / 8] = { 0 };
+    unsigned char *new_buffer, switcher;
+    short length = 1, buffer_len;
+
+    while (true) {
+        // Get to the leftmost element
+        while (!current_node->left->is_leaf()) {
+            current_node = current_node->left;
+            ++length;
+        }
+        // Add this element to result
+        buffer_len = (length + 7) / 8;
+        write_bit_field(result, current_node->left->data, buffer, length);
+        // Switch current bit
+        switcher = 0x01 << ((length - 1) % 8);
+        buffer[buffer_len - 1] ^= switcher;
+        // Check for the right node. If it isn't a leaf, then return to the beggining
+        if (!current_node->right->is_leaf()) {
+            current_node = current_node->right;
+            ++length;
+            continue;
+        }
+        // Otherwise, add right element to result
+        write_bit_field(result, current_node->right->data, buffer, length);
+        // Depend on the written code in buffer, we return back to parents until reach element with 0 bit
+        while (true) {
+            if ((buffer[buffer_len - 1] & switcher) == 0 && current_node->right->is_leaf()) {
+                buffer[buffer_len - 1] ^= switcher;
+                write_bit_field(result, current_node->right->data, buffer, length);
+            }
+            else if ((buffer[buffer_len - 1] & switcher) == 0) {
+                buffer[buffer_len - 1] ^= switcher;
+                current_node = current_node->right;
+                ++length;
+                break;
+            }
+            buffer[buffer_len - 1] ^= switcher;
+            --length;
+            // When there is no bit with 0 value then return from loop
+            if (length == 0) {
+                return result;
+            }
+            buffer_len = (length + 7) / 8;
+            switcher = 0x01 << ((length - 1) % 8);
+            current_node = current_node->parent;
+        }
     }
 }

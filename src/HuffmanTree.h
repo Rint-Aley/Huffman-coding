@@ -3,13 +3,15 @@
 
 #define BYTE_SIZE 256
 
+#include "BitWriter.h"
+
 class HuffmanTree {
 public:
     struct Node {
         unsigned char data;
         long long freq;
         Node *left, *right, *parent;
-        bool is_byte() const {return left == nullptr && right == nullptr;}
+        bool is_leaf() const {return left == nullptr && right == nullptr;}
         Node() : data(0), freq(0), left(nullptr), right(nullptr), parent(nullptr) {}
         Node(unsigned char data, unsigned long long frequency) : data(data), freq(frequency),
             left(nullptr), right(nullptr), parent(nullptr) {}
@@ -18,19 +20,18 @@ public:
         }
     };
 
-    // after building we have only one node in heap, this node is huffman tree
-    void build(const unsigned long long *frequencies);
-
-    // TODO: create new get_codes it 
-    // void get_codes(std::unordered_map<unsigned char, std::string> &codes);
-
-    Node* get_root() const { return heap_array[0]; }
-
     HuffmanTree(int capacity);
 
     HuffmanTree(unsigned long long* frequencies);
 
     ~HuffmanTree();
+
+    // after building we have only one node in heap, this node is huffman tree
+    void build(const unsigned long long *frequencies);
+    
+    Node* get_root() const { return heap_array[0]; }
+
+    BitFieldInfo** convert_tree_to_bit_fields();
 private:
     int capacity;
 
