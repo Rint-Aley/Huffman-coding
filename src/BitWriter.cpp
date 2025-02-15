@@ -43,7 +43,7 @@ void BitWriter::Write(const BitFieldInfo& code) {
 	shift = new_shift;
 }
 
-unsigned char* BitWriter::CreateCopyOfBuffer() {
+unsigned char* BitWriter::CreateCopyOfBuffer() const {
 	unsigned char* return_buffer = new unsigned char[size];
 	for (size_t i = 0; i < size; ++i) {
 		return_buffer[i] = buffer[i];
@@ -51,7 +51,7 @@ unsigned char* BitWriter::CreateCopyOfBuffer() {
 	return return_buffer;
 }
 
-char BitWriter::WriteToFile(std::ofstream& output_file)
+char BitWriter::WriteToFile(std::ofstream& output_file) const
 {
 	if (!output_file.is_open())
 		return 1;

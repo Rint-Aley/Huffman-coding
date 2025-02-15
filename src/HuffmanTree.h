@@ -31,11 +31,11 @@ public:
     
     Node* get_root() const { return heap_array[0]; }
 
-    BitFieldInfo** convert_tree_to_bit_fields();
+    BitFieldInfo** convert_tree_to_bit_fields() const;
 
-    int get_number_of_nodes() { return pointers_size; }
+    int get_number_of_nodes() const { return pointers_size; }
 
-    int get_bumber_of_leafs() { return (pointers_size + 1) / 2; }
+    int get_number_of_leafs() const { return (pointers_size + 1) / 2; }
 private:
     int capacity;
 

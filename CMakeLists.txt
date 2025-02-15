@@ -18,6 +18,7 @@ add_executable(huffman_coding
  "src/main.cpp"
  "src/cli.cpp"
  "src/encode.cpp"
+ "src/BitWriter.cpp"
  "src/HuffmanTree.cpp"
 )
 
@@ -28,7 +29,9 @@ add_executable(
  "tests/cli_test.cpp"
  "tests/huffman_tree_test.cpp"
  "tests/bit_writer_test.cpp"
+ "tests/tree_writing_test.cpp"
  "src/cli.cpp"
+ "src/encode.cpp"
  "src/HuffmanTree.cpp"
  "src/BitWriter.cpp"
 )

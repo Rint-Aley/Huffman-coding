@@ -112,7 +112,7 @@ void write_bit_field(BitFieldInfo** arr, unsigned char byte, unsigned char* buff
     arr[byte] = new BitFieldInfo(new_buffer, length);
 }
 
-BitFieldInfo** HuffmanTree::convert_tree_to_bit_fields()
+BitFieldInfo** HuffmanTree::convert_tree_to_bit_fields() const
 {
     BitFieldInfo **result = new BitFieldInfo*[BYTE_SIZE];
     

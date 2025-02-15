@@ -28,14 +28,14 @@ public:
 	BitWriter(size_t size);
 
 	~BitWriter() {
-		delete buffer;
+		delete[] buffer;
 	}
 
 	void Write(const BitFieldInfo& code);
 
-	unsigned char* CreateCopyOfBuffer();
+	unsigned char* CreateCopyOfBuffer() const;
 
-	char WriteToFile(std::ofstream& output_file);
+	char WriteToFile(std::ofstream& output_file) const;
 };
 
 #endif
