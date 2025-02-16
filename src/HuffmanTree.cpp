@@ -16,8 +16,7 @@ HuffmanTree::HuffmanTree(unsigned long long* frequencies) : HuffmanTree(BYTE_SIZ
 
 HuffmanTree::~HuffmanTree() {
     for (int i = 0; i < capacity; ++i) {
-        if (pointers[i] != nullptr)
-            delete pointers[i];
+        delete pointers[i];
     }
     delete[] pointers;
     delete[] heap_array;
@@ -80,7 +79,7 @@ void HuffmanTree::sift_up() {
 }
 
 void HuffmanTree::build(const unsigned long long *freq) {
-    unsigned char count = 0;
+    int count = 0;
     for (int i = 0; i < BYTE_SIZE; ++i) {
         if (freq[i] != 0) {
             pointers[count]->freq = freq[i];

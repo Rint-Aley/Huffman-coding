@@ -61,7 +61,6 @@ void encode(char *input_file_name, char *output_file_name) {
     for (size_t i = 0; i < buffer.size(); ++i) {
         bw.Write(*codes[buffer[i]]);
     }
-    bw.WriteToFile(output_file);
     if (bw.WriteToFile(output_file) == 2) {
         std::cerr << "Failed to write to output file." << std::endl;
     }
