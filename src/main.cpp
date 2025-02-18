@@ -1,5 +1,6 @@
 #include <iostream>
 #include "cli.h"
+#include "decode.h"
 #include "encode.h"
 
 int main(int argc, char** argv) {
@@ -29,10 +30,10 @@ int main(int argc, char** argv) {
         std::cerr << "Lack of arguments.\nexecutable_name encode <source_file> <output_file>" << std::endl;
         return 2;
     case Status::Decode:
-        //TODO: call decode
+        decode(argv[2], argv[3]);
         break;
     case Status::DecodeWithMeasurement:
-        //TODO: call decode
+        decode(argv[2], argv[3], true);
         break;
     case Status::DecodeHelp:
         std::cout << "executable_name decode <source_file> <output_file>" << std::endl;
