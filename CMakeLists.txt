@@ -21,6 +21,8 @@ add_executable(huffman_coding
  "src/measurement.cpp"
  "src/BitWriter.cpp"
  "src/HuffmanTree.cpp"
+ "src/decode.cpp"
+ "src/BitReader.cpp"
 )
 
 enable_testing()
@@ -31,11 +33,14 @@ add_executable(
  "tests/huffman_tree_test.cpp"
  "tests/bit_writer_test.cpp"
  "tests/tree_writing_test.cpp"
+ "tests/tree_reading_test.cpp"
  "src/cli.cpp"
  "src/encode.cpp"
+ "src/decode.cpp"
  "src/measurement.cpp"
  "src/HuffmanTree.cpp"
  "src/BitWriter.cpp"
+ "src/BitReader.cpp"
 )
 target_link_libraries(
   tests
