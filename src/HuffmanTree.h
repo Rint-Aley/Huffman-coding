@@ -18,10 +18,6 @@ public:
         inline bool operator==(const Node& node) const {
             return data == node.data && freq == node.freq;
         }
-        ~Node() {
-            delete left;
-            delete right;
-        }
     };
 
     HuffmanTree(int capacity);
