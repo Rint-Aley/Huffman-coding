@@ -1,35 +1,22 @@
 #include <fstream>
 #include <iostream>
-#include "encode.h"
-#include "HuffmanTree.h"
 #include <vector>
+#include <chrono>
+#include <format>
+#include "encode.h"
+#include "measurement.h"
+#include "HuffmanTree.h"
+#include "BitWriter.h"
 
-void write_frequencies(std::vector<unsigned char>& data, unsigned long long frequency[BYTE_SIZE]) {
-    for (size_t i = 0; i < data.size(); ++i) {
-        ++frequency[data[i]];
-    }
-}
-
-size_t get_output_file_length_in_bits(BitFieldInfo **arr, unsigned long long *frequency) {
-    size_t length = 0;
-    for (int i = 0; i < BYTE_SIZE; ++i) {
-        if (frequency[i] != 0)
-            length += frequency[i] * (*arr[i]).length;
-    }
-    return length;
-}
-
-inline size_t get_huffman_tree_length_in_bits(const HuffmanTree& huffman_tree) {
-    return huffman_tree.get_number_of_nodes() + huffman_tree.get_number_of_leafs() * 8;
-}
-
-void encode(char *input_file_name, char *output_file_name) {
+void encode(char *input_file_name, char *output_file_name, bool measure_perfomance) {
+    auto start = std::chrono::high_resolution_clock::now();
+    
     std::ifstream input_file(input_file_name, std::ios::binary);
-
     if (!input_file.is_open()) {
         std::cerr << "Failed to open input file." << std::endl;
         return;
     }
+    // TODO: Should be changed to iterators. Creating a vector has a huge overhead
     std::vector<unsigned char> buffer((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
     input_file.close();
 
@@ -37,7 +24,6 @@ void encode(char *input_file_name, char *output_file_name) {
     write_frequencies(buffer, frequency);
 
     std::ofstream output_file(output_file_name, std::ios::binary);
-
     if (!output_file.is_open()) {
         std::cerr << "Failed to open output file." << std::endl;
         return;
@@ -49,6 +35,12 @@ void encode(char *input_file_name, char *output_file_name) {
     size_t encoded_file_size_in_bits = get_output_file_length_in_bits(codes, frequency) + get_huffman_tree_length_in_bits(huffman_tree);
     unsigned char rest = encoded_file_size_in_bits % 8;
     size_t file_size_in_bytes = 2 + (encoded_file_size_in_bits + 7) / 8;
+
+    if (measure_perfomance) {
+        std::cout << "Input file: " << size_in_bytes_to_stirng(buffer.size()) << std::endl;
+        std::cout << "Output file: " << size_in_bytes_to_stirng(file_size_in_bytes) << std::endl;
+        std::cout << "Compression ratio: " << std::format("{:.2f}", static_cast<float>(buffer.size()) / file_size_in_bytes) << std::endl;
+    }
 
     BitWriter bw(file_size_in_bytes);
     // The number of significant bits in the last byte of file
@@ -63,8 +55,22 @@ void encode(char *input_file_name, char *output_file_name) {
     }
     if (bw.WriteToFile(output_file) == 2) {
         std::cerr << "Failed to write to output file." << std::endl;
+        output_file.close();
+        return;
     }
     output_file.close();
+    
+    if (measure_perfomance) {
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration<double>(end - start);
+        std::cout << "Encoding took: " << duration_to_string(duration);
+    }
+}
+
+void write_frequencies(std::vector<unsigned char>& data, unsigned long long frequency[BYTE_SIZE]) {
+    for (size_t i = 0; i < data.size(); ++i) {
+        ++frequency[data[i]];
+    }
 }
 
 void encode_huffman_tree(BitWriter& bit_writer, const HuffmanTree& tree) {

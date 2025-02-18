@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(huffman_coding)
@@ -18,6 +18,7 @@ add_executable(huffman_coding
  "src/main.cpp"
  "src/cli.cpp"
  "src/encode.cpp"
+ "src/measurement.cpp"
  "src/BitWriter.cpp"
  "src/HuffmanTree.cpp"
 )
@@ -32,6 +33,7 @@ add_executable(
  "tests/tree_writing_test.cpp"
  "src/cli.cpp"
  "src/encode.cpp"
+ "src/measurement.cpp"
  "src/HuffmanTree.cpp"
  "src/BitWriter.cpp"
 )

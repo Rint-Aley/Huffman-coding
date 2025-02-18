@@ -10,7 +10,9 @@ enum Status {
 	EncodeLackOfArgs,
 	DecodeLackOfArgs,
 	NotExistingCommand,
+	EncodeWithMeasurement,
+	DecodeWithMeasurement,
 };
 
-Status parse_args(int argc, char* argv[]);
+Status parse_args(int argc, const char* argv[]);
 #endif

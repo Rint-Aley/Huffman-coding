@@ -1,7 +1,7 @@
 #include "cli.h"
 #include <cstring>
 
-Status parse_args(int argc, char *argv[]) {
+Status parse_args(int argc, const char *argv[]) {
     if (argc == 1)
         return Status::NoArgs;
     if (argc > 1 && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")))
@@ -9,6 +9,8 @@ Status parse_args(int argc, char *argv[]) {
     if (!strcmp(argv[1], "encode")) {
         if (argc > 2 && (!strcmp(argv[2], "-h") || !strcmp(argv[2], "--help")))
             return Status::EncodeHelp;
+        if (argc >= 5 && !strcmp(argv[4], "--measure"))
+            return Status::EncodeWithMeasurement;
         if (argc >= 4)
             return Status::Encode;
         else
@@ -17,6 +19,8 @@ Status parse_args(int argc, char *argv[]) {
     if (!strcmp(argv[1], "decode")) {
         if (argc > 2 && (!strcmp(argv[2], "-h") || !strcmp(argv[2], "--help")))
             return Status::DecodeHelp;
+        if (argc >= 5 && !strcmp(argv[4], "--measure"))
+            return Status::DecodeWithMeasurement;
         if (argc >= 4)
             return Status::Decode;
         else

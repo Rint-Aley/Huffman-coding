@@ -15,7 +15,7 @@ public:
         Node() : data(0), freq(0), left(nullptr), right(nullptr), parent(nullptr) {}
         Node(unsigned char data, unsigned long long frequency) : data(data), freq(frequency),
             left(nullptr), right(nullptr), parent(nullptr) {}
-        inline bool operator==(const Node& node) {
+        inline bool operator==(const Node& node) const {
             return data == node.data && freq == node.freq;
         }
     };

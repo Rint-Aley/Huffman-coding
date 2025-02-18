@@ -2,7 +2,7 @@
 #include "../src/cli.h"
 
 TEST(CLI, Help) {
-	char* args[]{ "source", "-h", "something other" };
+	const char* args[]{ "source", "-h", "something other" };
 	int argc = 2;
 	ASSERT_EQ(Status::Help, parse_args(argc, args));
 	argc = 3;
@@ -16,10 +16,16 @@ TEST(CLI, Help) {
 }
 
 TEST(CLI, Decode) {
-	char* args[]{ "source", "decode", "file1", "file2", "something other"};
+	const char* args[]{ "source", "decode", "file1", "file2", "--measure", "something other"};
 	int argc = 4;
 	ASSERT_EQ(Status::Decode, parse_args(argc, args));
+
+	argc = 6;
+	ASSERT_EQ(Status::DecodeWithMeasurement, parse_args(argc, args));
 	argc = 5;
+	ASSERT_EQ(Status::DecodeWithMeasurement, parse_args(argc, args));
+
+	args[4] = args[5];
 	ASSERT_EQ(Status::Decode, parse_args(argc, args));
 
 	argc = 3;
@@ -39,10 +45,16 @@ TEST(CLI, Decode) {
 }
 
 TEST(CLI, Encode) {
-	char* args[]{ "source", "encode", "file1", "file2", "something other" };
+	const char* args[]{ "source", "encode", "file1", "file2", "--measure", "something other" };
 	int argc = 4;
 	ASSERT_EQ(Status::Encode, parse_args(argc, args));
+
+	argc = 6;
+	ASSERT_EQ(Status::EncodeWithMeasurement, parse_args(argc, args));
 	argc = 5;
+	ASSERT_EQ(Status::EncodeWithMeasurement, parse_args(argc, args));
+
+	args[4] = args[5];
 	ASSERT_EQ(Status::Encode, parse_args(argc, args));
 
 	argc = 3;
@@ -62,7 +74,7 @@ TEST(CLI, Encode) {
 }
 
 TEST(CLI, NotExistingCommand) {
-	char* args[]{ "source", "1", "2"};
+	const char* args[]{ "source", "1", "2"};
 	int argc = 3;
 	ASSERT_EQ(Status::NotExistingCommand, parse_args(argc, args));
 

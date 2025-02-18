@@ -60,45 +60,45 @@ TEST(HuffmanTree, Case2) {
 	frequencies[234] = 14;
 	HuffmanTree huffman_tree = HuffmanTree(frequencies);
 
-	HuffmanTree::Node *prebuild_tree[15];
-	prebuild_tree[0] = &HuffmanTree::Node(2, 8);
-	prebuild_tree[1] = &HuffmanTree::Node(3, 9);
-	prebuild_tree[2] = &HuffmanTree::Node(10, 9);
-	prebuild_tree[3] = &HuffmanTree::Node(23, 10);
-	prebuild_tree[4] = &HuffmanTree::Node(52, 24);
-	prebuild_tree[5] = &HuffmanTree::Node(121, 5);
-	prebuild_tree[6] = &HuffmanTree::Node(193, 6);
-	prebuild_tree[7] = &HuffmanTree::Node(234, 14);
+	HuffmanTree::Node prebuild_tree[15];
+	prebuild_tree[0] = HuffmanTree::Node(2, 8);
+	prebuild_tree[1] = HuffmanTree::Node(3, 9);
+	prebuild_tree[2] = HuffmanTree::Node(10, 9);
+	prebuild_tree[3] = HuffmanTree::Node(23, 10);
+	prebuild_tree[4] = HuffmanTree::Node(52, 24);
+	prebuild_tree[5] = HuffmanTree::Node(121, 5);
+	prebuild_tree[6] = HuffmanTree::Node(193, 6);
+	prebuild_tree[7] = HuffmanTree::Node(234, 14);
 
-	prebuild_tree[8] = &HuffmanTree::Node(0, 17);
-	prebuild_tree[8]->left = prebuild_tree[0];
-	prebuild_tree[8]->right = prebuild_tree[1];
+	prebuild_tree[8] = HuffmanTree::Node(0, 17);
+	prebuild_tree[8].left = &prebuild_tree[0];
+	prebuild_tree[8].right = &prebuild_tree[1];
 
-	prebuild_tree[9] = &HuffmanTree::Node(0, 19);
-	prebuild_tree[9]->left = prebuild_tree[2];
-	prebuild_tree[9]->right = prebuild_tree[3];
+	prebuild_tree[9] = HuffmanTree::Node(0, 19);
+	prebuild_tree[9].left = &prebuild_tree[2];
+	prebuild_tree[9].right = &prebuild_tree[3];
 	
-	prebuild_tree[10] = &HuffmanTree::Node(0, 11);
-	prebuild_tree[10]->left = prebuild_tree[5];
-	prebuild_tree[10]->right = prebuild_tree[6];
+	prebuild_tree[10] = HuffmanTree::Node(0, 11);
+	prebuild_tree[10].left = &prebuild_tree[5];
+	prebuild_tree[10].right = &prebuild_tree[6];
 
-	prebuild_tree[11] = &HuffmanTree::Node(0, 25);
-	prebuild_tree[11]->left = prebuild_tree[10];
-	prebuild_tree[11]->right = prebuild_tree[7];
+	prebuild_tree[11] = HuffmanTree::Node(0, 25);
+	prebuild_tree[11].left = &prebuild_tree[10];
+	prebuild_tree[11].right = &prebuild_tree[7];
 
-	prebuild_tree[12] = &HuffmanTree::Node(0, 49);
-	prebuild_tree[12]->left = prebuild_tree[4];
-	prebuild_tree[12]->right = prebuild_tree[11];
+	prebuild_tree[12] = HuffmanTree::Node(0, 49);
+	prebuild_tree[12].left = &prebuild_tree[4];
+	prebuild_tree[12].right = &prebuild_tree[11];
 
-	prebuild_tree[13] = &HuffmanTree::Node(0, 36);
-	prebuild_tree[13]->left = prebuild_tree[8];
-	prebuild_tree[13]->right = prebuild_tree[9];
+	prebuild_tree[13] = HuffmanTree::Node(0, 36);
+	prebuild_tree[13].left = &prebuild_tree[8];
+	prebuild_tree[13].right = &prebuild_tree[9];
 
-	prebuild_tree[14] = &HuffmanTree::Node(0, 85);
-	prebuild_tree[14]->left = prebuild_tree[13];
-	prebuild_tree[14]->right = prebuild_tree[12];
+	prebuild_tree[14] = HuffmanTree::Node(0, 85);
+	prebuild_tree[14].left = &prebuild_tree[13];
+	prebuild_tree[14].right = &prebuild_tree[12];
 
-	ASSERT_EQ(is_equal_tree(huffman_tree.get_root(), prebuild_tree[14]), true);
+	ASSERT_EQ(is_equal_tree(huffman_tree.get_root(), &prebuild_tree[14]), true);
 	
 	auto arr = huffman_tree.convert_tree_to_bit_fields();
 
