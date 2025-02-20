@@ -28,7 +28,7 @@ HuffmanTree::Node* decode_huffman_tree(BitReader &br) {
     return node;
 }
 
-void decode(char *input_file_name, char *output_file_name, bool measure_performance) {
+void decode(const char *input_file_name, const char *output_file_name, bool measure_performance) {
     auto start = std::chrono::high_resolution_clock::now();
 
     std::ifstream input_file(input_file_name, std::ios::binary);

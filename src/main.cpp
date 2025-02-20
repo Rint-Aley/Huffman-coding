@@ -8,7 +8,7 @@
 int main(int argc, char** argv) {
     const char* HELP_MESSAGE = "executable_name [-h] [--help] - shows this message\n"
         "executable_name encode <source_file> <output_file> - encodes source file and writes it in output file\n"
-        "executable_name decode <source_file> <output_file> - decodes encrypted source file and writes it in output file"
+        "executable_name decode <source_file> <output_file> - decodes encrypted source file and writes it in output file\n"
         "executable_name analyze <source_dir> - write statistic in out.txt for each file in <source_dir>";
     switch (parse_args(argc, const_cast<const char**>(argv))) {
     case Status::NoArgs:

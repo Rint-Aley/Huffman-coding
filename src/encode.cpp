@@ -9,7 +9,7 @@
 #include "HuffmanTree.h"
 #include "BitWriter.h"
 
-void encode(char *input_file_name, char *output_file_name, bool measure_perfomance) {
+void encode(const char *input_file_name, const char *output_file_name, bool measure_perfomance) {
     if (std::filesystem::is_empty(input_file_name)) {
         std::cerr << "File is empty" << std::endl;
         return;

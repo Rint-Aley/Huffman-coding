@@ -34,7 +34,7 @@ void analyze_in_dir(char *input_dir) {
         end = std::chrono::high_resolution_clock::now();
         duration = std::chrono::duration<double>(end - start);
 
-        outFile << duration_to_string(duration) << '\t' << entry.path().extension() <<'\n';
+        outFile << duration_to_string(duration) << '\t' << entry.path().extension() << '\n';
     }
     try {
         std::filesystem::remove(TEMP);
