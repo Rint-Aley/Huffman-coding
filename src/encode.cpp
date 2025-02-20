@@ -3,12 +3,18 @@
 #include <vector>
 #include <chrono>
 #include <format>
+#include <filesystem>
 #include "encode.h"
 #include "measurement.h"
 #include "HuffmanTree.h"
 #include "BitWriter.h"
 
 void encode(char *input_file_name, char *output_file_name, bool measure_perfomance) {
+    if (std::filesystem::is_empty(input_file_name)) {
+        std::cerr << "File is empty" << std::endl;
+        return;
+    }
+
     auto start = std::chrono::high_resolution_clock::now();
     
     std::ifstream input_file(input_file_name, std::ios::binary);
