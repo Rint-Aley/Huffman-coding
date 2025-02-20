@@ -26,6 +26,14 @@ Status parse_args(int argc, const char *argv[]) {
         else
             return Status::DecodeLackOfArgs;
     }
+    if (!strcmp(argv[1], "analyze")) {
+        if (argc > 2 && (!strcmp(argv[2], "-h") || !strcmp(argv[2], "--help")))
+            return Status::AnalyzeHelp;
+        if (argc >= 3)
+            return Status::Analyze;
+        else
+            return Status::AnalyzeLackOfArgs;
+    }
     return Status::NotExistingCommand;
 }
 

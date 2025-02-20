@@ -23,6 +23,8 @@ add_executable(huffman_coding
  "src/HuffmanTree.cpp"
  "src/decode.cpp"
  "src/BitReader.cpp"
+        src/analyze.cpp
+        src/analyze.h
 )
 
 enable_testing()

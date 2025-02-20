@@ -72,6 +72,29 @@ TEST(CLI, Encode) {
 	argc = 4;
 	ASSERT_EQ(Status::EncodeHelp, parse_args(argc, args));
 }
+TEST(CLI, Analyze) {
+    const char* args[]{ "source", "analyze", "directory", "something other" };
+    int argc = 3;
+    ASSERT_EQ(Status::Analyze, parse_args(argc, args));
+
+    argc = 4;
+    ASSERT_EQ(Status::Analyze, parse_args(argc, args));
+
+    argc = 2;
+    ASSERT_EQ(Status::AnalyzeLackOfArgs, parse_args(argc, args));
+
+    args[2] = "-h";
+    argc = 3;
+    ASSERT_EQ(Status::AnalyzeHelp, parse_args(argc, args));
+    argc = 4;
+    ASSERT_EQ(Status::AnalyzeHelp, parse_args(argc, args));
+
+    args[2] = "--help";
+    argc = 3;
+    ASSERT_EQ(Status::AnalyzeHelp, parse_args(argc, args));
+    argc = 4;
+    ASSERT_EQ(Status::AnalyzeHelp, parse_args(argc, args));
+}
 
 TEST(CLI, NotExistingCommand) {
 	const char* args[]{ "source", "1", "2"};

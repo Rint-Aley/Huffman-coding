@@ -59,11 +59,10 @@ void encode(char *input_file_name, char *output_file_name, bool measure_perfoman
         return;
     }
     output_file.close();
-    
     if (measure_perfomance) {
         auto end = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration<double>(end - start);
-        std::cout << "Encoding took: " << duration_to_string(duration);
+        std::cout << "Encoding took: " << duration_to_string(duration) << '\n';
     }
 }
 
